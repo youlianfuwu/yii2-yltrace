@@ -31,7 +31,6 @@ class ActionTraceFilter extends ActionFilter
 
     public function afterAction($action, $result)
     {
-//        $this->_span->end();
         if(isset($this->_span)){
             $this->_span->end();
             $this->_scope->detach();

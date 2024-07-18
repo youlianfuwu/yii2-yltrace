@@ -79,8 +79,8 @@ class YoulianTracer extends Component implements BootstrapInterface
         Sdk::builder()
             ->setTracerProvider($tracerProvider)
             ->setPropagator(TraceContextPropagator::getInstance())
-            ->setAutoShutdown(true)  // PHP 程序退出后自动关闭 tracerProvider，保证链路数据都被上报
-            ->buildAndRegisterGlobal(); // 将 tracerProvider 添加到全局
+            ->setAutoShutdown(true)
+            ->buildAndRegisterGlobal();
 
     }
 

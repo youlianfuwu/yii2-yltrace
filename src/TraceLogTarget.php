@@ -5,10 +5,8 @@ namespace yii\yltrace;
 
 
 use OpenTelemetry\API\Globals;
-use OpenTelemetry\API\Trace\Span;
 use Yii;
 use yii\debug\LogTarget;
-use yii\debug\Module;
 
 class TraceLogTarget extends LogTarget
 {
