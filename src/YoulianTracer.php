@@ -34,7 +34,7 @@ class YoulianTracer extends Component implements BootstrapInterface
 
     public $endpoint;
 
-    public $sampleRatio = 0.3;
+    public $sampleRatio = 30;
 
     public $logTarget;
 
@@ -47,6 +47,9 @@ class YoulianTracer extends Component implements BootstrapInterface
         $this->serviceName = $config['serviceName'];
         $this->hostName = $config['hostName'];
         $this->endpoint = $config['endpoint'];
+        if(array_key_exists('sampleRatio', $config)){
+            $this->sampleRatio = $config['sampleRatio'];
+        }
         parent::__construct($config);
     }
 
@@ -80,7 +83,7 @@ class YoulianTracer extends Component implements BootstrapInterface
                 (new BatchSpanProcessorBuilder($spanExporter))->build()
             )
             ->setResource($resource)
-            ->setSampler(new ParentBased(new TraceIdRatioBasedSampler($this->sampleRatio)))
+            ->setSampler(new ParentBased(new TraceIdRatioBasedSampler($this->sampleRatio/100)))
             ->build();
 
         Sdk::builder()
