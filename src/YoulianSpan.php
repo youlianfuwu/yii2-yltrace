@@ -18,7 +18,6 @@ class YoulianSpan
             $tracer = Globals::tracerProvider()->getTracer('yltrace');
             // 创建 Span
             $span = $tracer->spanBuilder($spanName)->startSpan();
-            $span->getContext()->getTraceId();
             $span->setAttribute('net.host.ip',Yii::$app->request->getUserIP());
             static::$_rootSpan = $span;
             $init = true;

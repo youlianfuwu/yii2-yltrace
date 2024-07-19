@@ -5,14 +5,19 @@ namespace yii\yltrace;
 
 
 use OpenTelemetry\API\Trace\Propagation\TraceContextPropagator;
+use OpenTelemetry\Contrib\Otlp\MetricExporter;
 use OpenTelemetry\Contrib\Otlp\OtlpHttpTransportFactory;
 use OpenTelemetry\Contrib\Otlp\SpanExporter;
 use OpenTelemetry\SDK\Common\Attribute\Attributes;
+use OpenTelemetry\SDK\Common\Export\Stream\StreamTransportFactory;
+use OpenTelemetry\SDK\Metrics\MeterProvider;
+use OpenTelemetry\SDK\Metrics\MetricReader\ExportingReader;
 use OpenTelemetry\SDK\Resource\ResourceInfo;
 use OpenTelemetry\SDK\Resource\ResourceInfoFactory;
 use OpenTelemetry\SDK\Sdk;
 use OpenTelemetry\SDK\Trace\Sampler\AlwaysOnSampler;
 use OpenTelemetry\SDK\Trace\Sampler\ParentBased;
+use OpenTelemetry\SDK\Trace\Sampler\TraceIdRatioBasedSampler;
 use OpenTelemetry\SDK\Trace\SpanProcessor\BatchSpanProcessorBuilder;
 use OpenTelemetry\SDK\Trace\TracerProvider;
 use OpenTelemetry\SemConv\ResourceAttributes;
@@ -28,6 +33,8 @@ class YoulianTracer extends Component implements BootstrapInterface
     public $hostName;
 
     public $endpoint;
+
+    public $sampleRatio = 0.3;
 
     public $logTarget;
 
@@ -73,7 +80,7 @@ class YoulianTracer extends Component implements BootstrapInterface
                 (new BatchSpanProcessorBuilder($spanExporter))->build()
             )
             ->setResource($resource)
-            ->setSampler(new ParentBased(new AlwaysOnSampler()))
+            ->setSampler(new ParentBased(new TraceIdRatioBasedSampler($this->sampleRatio)))
             ->build();
 
         Sdk::builder()

@@ -4,6 +4,7 @@
 namespace yii\yltrace;
 
 
+use OpenTelemetry\API\Globals;
 use Yii;
 use yii\base\ActionFilter;
 
@@ -26,6 +27,8 @@ class ActionTraceFilter extends ActionFilter
             $this->_scope = $scope;
             $this->_span = $childSpan;
         }
+        $meter = Globals::meterProvider()->getMeter('ylmeter');
+        $meter->createCounter($action->actionMethod)->add(1);
         return parent::beforeAction($action);
     }
 
