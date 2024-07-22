@@ -31,7 +31,6 @@ class TraceLogTarget extends LogTarget
             return $item[1] > 8;
         });
         $rootSpan = YoulianSpan::getRootSpan("")[1];
-
         if(empty($profileMessage) || !$rootSpan->getContext()->isSampled()){
             return;
         }
@@ -45,6 +44,7 @@ class TraceLogTarget extends LogTarget
                 $childSpan = $tracer->spanBuilder($timing['category'])->setStartTimestamp($startTs)->startSpan();
                 $childSpan->setAttribute('info', $timing['info']);
                 $childSpan->setAttribute('memory', $timing['memory']/(8*1024));
+                $childSpan->setAttribute('net.host.ip', Yii::$app->request->getUserIP());
                 $childSpan->end($endts);
             } catch (\Exception $e) {
             } finally {
