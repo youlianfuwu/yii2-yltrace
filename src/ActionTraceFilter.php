@@ -19,7 +19,7 @@ class ActionTraceFilter extends ActionFilter
         if(!isset($action->actionMethod)){
             return parent::beforeAction($action);
         }
-        list($init, $rootSpan) = YoulianSpan::getRootSpan(get_class($action->controller).'.'.$action->actionMethod);
+        list($init, $rootSpan) = YoulianSpan::getRootSpan(get_class($action->controller).'::'.$action->actionMethod);
         Yii::error("beforeAction init : $init, key : ".$action->actionMethod." sampled : ".$rootSpan->getContext()->isSampled());
         if(!$init){
             $scope = $rootSpan->activate();
