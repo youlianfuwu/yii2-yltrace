@@ -31,7 +31,11 @@ class TraceLogTarget extends LogTarget
             return $item[1] > 8;
         });
         $rootSpan = YoulianSpan::getRootSpan("")[1];
-        if(empty($profileMessage) || !$rootSpan->getContext()->isSampled()){
+        if(!$rootSpan->getContext()->isSampled()){
+            return;
+        }
+        if(empty($profileMessage)){
+            $rootSpan->end();
             return;
         }
         $timings = Yii::getLogger()->calculateTimings($profileMessage);
@@ -58,7 +62,6 @@ class TraceLogTarget extends LogTarget
         foreach ($summary as $key => $value) {
             $rootSpan->setAttribute($key, $value);
         }
-        $rootSpan->addEvent("End");
         // 销毁 Span
         $rootSpan->end();
     }
