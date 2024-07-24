@@ -31,7 +31,8 @@ class TraceLogTarget extends LogTarget
             return $item[1] > 8;
         });
         $rootSpan = YoulianSpan::getRootSpan("")[1];
-        Yii::error("export profile message : ".empty($profileMessage)." sampled : ".$rootSpan->getContext()->isSampled());
+        $logfile = fopen("/opt/trace.log", "w") or die("Unable to open file!");
+        fwrite($logfile, "export profile message : ".(empty($profileMessage) ?: ' false ')." sampled : ".$rootSpan->getContext()->isSampled()."\n");
         if(!$rootSpan->getContext()->isSampled()){
             return;
         }
@@ -64,7 +65,9 @@ class TraceLogTarget extends LogTarget
             $rootSpan->setAttribute($key, $value);
         }
         // 销毁 Span
-        Yii::error("export end root span, sampled : ".$rootSpan->getContext()->isSampled());
+        fwrite($logfile, "export end root span, sampled : ".($rootSpan->getContext()->isSampled() ?: 'false')."\n");
+        fclose($logfile);
+
         $rootSpan->end();
     }
 
