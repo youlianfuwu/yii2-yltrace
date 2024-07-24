@@ -31,8 +31,6 @@ class TraceLogTarget extends LogTarget
             return $item[1] > 8;
         });
         $rootSpan = YoulianSpan::getRootSpan("")[1];
-        $logfile = fopen("/opt/trace.log", "w") or die("Unable to open file!");
-        fwrite($logfile, "export profile message : ".(empty($profileMessage) ?: ' false ')." sampled : ".$rootSpan->getContext()->isSampled()."\n");
         if(!$rootSpan->getContext()->isSampled()){
             return;
         }
@@ -65,9 +63,6 @@ class TraceLogTarget extends LogTarget
             $rootSpan->setAttribute($key, $value);
         }
         // 销毁 Span
-        fwrite($logfile, "export end root span, sampled : ".($rootSpan->getContext()->isSampled() ?: 'false')."\n");
-        fclose($logfile);
-
         $rootSpan->end();
     }
 
