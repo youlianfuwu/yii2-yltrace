@@ -20,7 +20,6 @@ class ActionTraceFilter extends ActionFilter
             return parent::beforeAction($action);
         }
         list($init, $rootSpan) = YoulianSpan::getRootSpan(get_class($action->controller).'::'.$action->actionMethod);
-        Yii::error("beforeAction init : $init, key : ".$action->actionMethod." sampled : ".$rootSpan->getContext()->isSampled());
         if(!$init){
             $scope = $rootSpan->activate();
             $tracer = YoulianSpan::getTracer();
@@ -33,7 +32,6 @@ class ActionTraceFilter extends ActionFilter
 
     public function afterAction($action, $result)
     {
-        Yii::error("afterAction isset span : ".isset($this->_span));
         if(isset($this->_span)){
             $this->_span->end();
             $this->_scope->detach();
