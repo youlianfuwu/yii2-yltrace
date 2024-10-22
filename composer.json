@@ -2,7 +2,7 @@
     "name": "youlianfuwu/yii2-yltrace",
     "description": "Yii2 extension, used to trace metrics with OpenTelemetry",
     "type": "yii2-extension",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "keywords": ["yii2","trace","OpenTelemetry", "youlianfuwu"],
     "license": "Apache-2.0",
     "authors": [
@@ -12,9 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=7.3.0",
         "yiisoft/yii2": "~2.0.39",
-        "open-telemetry/opentelemetry": "^1.0",
+        "open-telemetry/opentelemetry": "1.0.0",
         "guzzlehttp/promises": "^2.0",
         "php-http/message-factory": "^1.1",
         "php-http/httplug": "^2.4",
