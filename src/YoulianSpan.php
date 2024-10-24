@@ -18,7 +18,7 @@ class YoulianSpan
             $tracer = self::getTracer();
             // 创建 Span
             $span = $tracer->spanBuilder($spanName)->startSpan();
-            $span->setAttribute('net.host.ip', $tracer->hostName);
+            $span->setAttribute('net.host.ip', Yii::$app->tracer->hostName);
             static::$_rootSpan = $span;
             $init = true;
         }
