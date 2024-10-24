@@ -11,12 +11,14 @@ use yii\debug\LogTarget;
 class TraceLogTarget extends LogTarget
 {
 
+    public $host;
     /**
      * @param \yii\debug\Module $module
      * @param array $config
      */
     public function __construct($module, $config = [])
     {
+        $this->host = gethostbyname(gethostname());
         parent::__construct($config);
     }
 
@@ -48,7 +50,7 @@ class TraceLogTarget extends LogTarget
                 $childSpan = $tracer->spanBuilder($timing['category'])->setStartTimestamp($startTs)->startSpan();
                 $childSpan->setAttribute('info', $timing['info']);
                 $childSpan->setAttribute('memory', $timing['memory']/(8*1024));
-                $childSpan->setAttribute('net.host.ip', Yii::$app->request->getUserIP());
+                $childSpan->setAttribute('net.host.ip', $tracer->hostName);
                 $childSpan->end($endts);
             } catch (\Exception $e) {
             } finally {

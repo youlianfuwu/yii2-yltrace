@@ -15,10 +15,10 @@ class YoulianSpan
         $init = false;
         if(!isset(static::$_rootSpan)){
             // 获取 tracer
-            $tracer = Globals::tracerProvider()->getTracer('yltrace');
+            $tracer = self::getTracer();
             // 创建 Span
             $span = $tracer->spanBuilder($spanName)->startSpan();
-            $span->setAttribute('net.host.ip',Yii::$app->request->getUserIP());
+            $span->setAttribute('net.host.ip', $tracer->hostName);
             static::$_rootSpan = $span;
             $init = true;
         }
